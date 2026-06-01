@@ -43,8 +43,3 @@ Dự án này thực hành trên đa dạng các tập dữ liệu để xử l�
 1. Tải các tập tin dữ liệu (CSV, hình ảnh) lên thư mục lưu trữ của Google Colab (ví dụ: `/content/sample_data/`).
 2. Tải file Notebook (`.ipynb`) lên Colab.
 3. Chạy từng ô lệnh từ trên xuống dưới. Các thư viện như TensorFlow, Keras đã được cài đặt sẵn.
-
-**Tùy chọn 2: Chạy local trên IDLE**
-1. Đảm bảo máy tính đã cài đặt Python và các thư viện yêu cầu: `tensorflow`, `keras`, `pandas`, `numpy`, `matplotlib`, `scikit-learn`, `flask`.
-2. Mở file mã nguồn `.py` dành riêng cho môi trường IDLE.
-3. Nhấn `F5` (Run Module) để thực thi đoạn mã huấn luyện mô hình hoặc khởi chạy web server Flask cho giao diện dự đoán.
