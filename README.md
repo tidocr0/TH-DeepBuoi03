@@ -1,4 +1,50 @@
-Bài Tập Thực Hành: Xây Dựng Mạng Nơ-ron Nhân Tạo (Artificial Neural Network) với TensorFlow📊 
-Tập dữ liệu (Dataset)Dự án này thực hành trên đa dạng các tập dữ liệu để xử lý bài toán phân lớp ảnh và dữ liệu bảng:  Fashion MNIST: Tập dữ liệu $28\times28$ pixel chứa các mẫu quần áo với 10 nhãn phân loại.  CIFAR10: Tập ảnh phân loại đối tượng (máy bay, ô tô, chim, mèo, chó, ếch, ngựa, tàu, xe tải).  MNIST Digit: Tập dữ liệu nhận dạng ảnh chữ viết tay các số từ 0 đến 9.  Dogs vs Cats: Tập dữ liệu hình ảnh để phân loại chó và mèo.  Adult Dataset: Dữ liệu nhân khẩu học để dự báo thu nhập cá nhân trên $50K/năm$ hoặc dưới mức này.  Car Evaluation: Dữ liệu dùng để dự báo và đánh giá chất lượng xe ô tô.  
-🛠️ Quy trình thực hiện chi tiết1. Tiền xử lý và Làm sạch dữ liệu (Data Cleaning)Thực hiện biến đổi cấu trúc (Reshape) đối với dữ liệu hình ảnh từ 3-D array thành 2-D array.  Chuẩn hóa dữ liệu bằng MinMaxScaler để đưa các giá trị đặc trưng về khoảng tiêu chuẩn.  Tách biệt dữ liệu thành tập huấn luyện (80%) và tập kiểm thử (20%).  2. Trực quan hóa dữ liệu (Data Visualization)Sử dụng thư viện matplotlib để hiển thị trực quan các mẫu dữ liệu cùng với nhãn tương ứng của chúng.  Kiểm tra số lượng lớp (classes) để thiết lập thông số đầu ra cho mô hình.  3. Xây dựng và Huấn luyện mô hìnhKhởi tạo kiến trúc mạng nơ-ron nhân tạo Sequential sử dụng Keras/TensorFlow.  Thêm các lớp ẩn (Hidden Layers) và lớp đầu ra (Output Layer) với cấu hình nơ-ron phù hợp.  Tích hợp các hàm kích hoạt (Activation function) phổ biến như ReLU để học các mẫu phi tuyến tính và Softmax cho phân lớp.  Thiết lập thuật toán tối ưu adam và hàm mất mát sparse_categorical_crossentropy.  Tiến hành huấn luyện mô hình thông qua phương thức fit() với số lượng epochs định sẵn.  4. Đánh giá và Dự báoVẽ đồ thị phân tích sự biến thiên của độ chính xác (Accuracy) và hàm mất mát (Loss) trên tập huấn luyện và tập đánh giá (Validation) qua từng epoch.  Sử dụng mô hình đã huấn luyện để dự báo trực tiếp trên tập kiểm thử (Testing) và các mẫu dữ liệu hình ảnh mới tải lên.  5. Triển khai ứng dụng Web (Deployment)Đóng gói toàn bộ mô hình nhận diện học sâu (ANN) và tích hợp lên nền tảng Web sử dụng framework Flask.  
-🚀 Hướng dẫn chạy mã nguồn (Google Colab & IDLE)  Để đảm bảo tính linh hoạt trong quá trình chạy, hệ thống cung cấp mã nguồn tương thích với cả hai môi trường:Tùy chọn 1: Chạy trên Google ColabTải các tập tin dữ liệu (CSV, hình ảnh) lên thư mục lưu trữ của Google Colab (ví dụ: /content/sample_data/).  Tải file Notebook (.ipynb) lên Colab.Chạy từng ô lệnh từ trên xuống dưới. Các thư viện như TensorFlow, Keras đã được cài đặt sẵn.Tùy chọn 2: Chạy local trên IDLEĐảm bảo máy tính đã cài đặt Python và các thư viện yêu cầu: tensorflow, keras, pandas, numpy, matplotlib, scikit-learn, flask.  Mở file mã nguồn .py dành riêng cho môi trường IDLE.Nhấn F5 (Run Module) để thực thi đoạn mã huấn luyện mô hình hoặc khởi chạy web server Flask cho giao diện dự đoán.
+# Bài Tập Thực Hành: Xây Dựng Mạng Nơ-ron Nhân Tạo (Artificial Neural Network) với TensorFlow
+
+## 📊 Tập dữ liệu (Dataset)
+
+Dự án này thực hành trên đa dạng các tập dữ liệu để xử lý bài toán phân lớp ảnh và dữ liệu bảng:
+* **Fashion MNIST:** Tập dữ liệu 28x28 pixel chứa các mẫu quần áo với 10 nhãn phân loại.
+* **CIFAR10:** Tập ảnh phân loại đối tượng (máy bay, ô tô, chim, mèo, chó, ếch, ngựa, tàu, xe tải).
+* **MNIST Digit:** Tập dữ liệu nhận dạng ảnh chữ viết tay các số từ 0 đến 9.
+* **Dogs vs Cats:** Tập dữ liệu hình ảnh để phân loại chó và mèo.
+* **Adult Dataset:** Dữ liệu nhân khẩu học để dự báo thu nhập cá nhân trên 50K/năm hoặc dưới mức này.
+* **Car Evaluation:** Dữ liệu dùng để dự báo và đánh giá chất lượng xe ô tô.
+
+## 🛠️ Quy trình thực hiện chi tiết
+
+### 1. Tiền xử lý và Làm sạch dữ liệu (Data Cleaning)
+* Thực hiện biến đổi cấu trúc (Reshape) đối với dữ liệu hình ảnh từ 3-D array thành 2-D array.
+* Chuẩn hóa dữ liệu bằng `MinMaxScaler` để đưa các giá trị đặc trưng về khoảng tiêu chuẩn.
+* Tách biệt dữ liệu thành tập huấn luyện (80%) và tập kiểm thử (20%).
+
+### 2. Trực quan hóa dữ liệu (Data Visualization)
+* Sử dụng thư viện `matplotlib` để hiển thị trực quan các mẫu dữ liệu cùng với nhãn tương ứng của chúng.
+* Kiểm tra số lượng lớp (classes) để thiết lập thông số đầu ra cho mô hình.
+
+### 3. Xây dựng và Huấn luyện mô hình
+* Khởi tạo kiến trúc mạng nơ-ron nhân tạo `Sequential` sử dụng Keras/TensorFlow.
+* Thêm các lớp ẩn (Hidden Layers) và lớp đầu ra (Output Layer) với cấu hình nơ-ron phù hợp.
+* Tích hợp các hàm kích hoạt (Activation function) phổ biến như ReLU để học các mẫu phi tuyến tính và Softmax cho phân lớp.
+* Thiết lập thuật toán tối ưu `adam` và hàm mất mát `sparse_categorical_crossentropy`.
+* Tiến hành huấn luyện mô hình thông qua phương thức `fit()` với số lượng epochs định sẵn.
+
+### 4. Đánh giá và Dự báo
+* Vẽ đồ thị phân tích sự biến thiên của độ chính xác (Accuracy) và hàm mất mát (Loss) trên tập huấn luyện và tập đánh giá (Validation) qua từng epoch.
+* Sử dụng mô hình đã huấn luyện để dự báo trực tiếp trên tập kiểm thử (Testing) và các mẫu dữ liệu hình ảnh mới tải lên.
+
+### 5. Triển khai ứng dụng Web (Deployment)
+* Đóng gói toàn bộ mô hình nhận diện học sâu (ANN) và tích hợp lên nền tảng Web sử dụng framework Flask.
+
+## 🚀 Hướng dẫn chạy mã nguồn (Google Colab & IDLE)
+
+Để đảm bảo tính linh hoạt trong quá trình chạy, hệ thống cung cấp mã nguồn tương thích với cả hai môi trường:
+
+**Tùy chọn 1: Chạy trên Google Colab**
+1. Tải các tập tin dữ liệu (CSV, hình ảnh) lên thư mục lưu trữ của Google Colab (ví dụ: `/content/sample_data/`).
+2. Tải file Notebook (`.ipynb`) lên Colab.
+3. Chạy từng ô lệnh từ trên xuống dưới. Các thư viện như TensorFlow, Keras đã được cài đặt sẵn.
+
+**Tùy chọn 2: Chạy local trên IDLE**
+1. Đảm bảo máy tính đã cài đặt Python và các thư viện yêu cầu: `tensorflow`, `keras`, `pandas`, `numpy`, `matplotlib`, `scikit-learn`, `flask`.
+2. Mở file mã nguồn `.py` dành riêng cho môi trường IDLE.
+3. Nhấn `F5` (Run Module) để thực thi đoạn mã huấn luyện mô hình hoặc khởi chạy web server Flask cho giao diện dự đoán.
